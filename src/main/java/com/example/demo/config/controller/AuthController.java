@@ -1,35 +1,33 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/users")
+public class UserController {
 
-    private final UserService userService;
+    private final UserService service;
 
-    @Autowired
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest registerRequest) {
-        User user = new User(registerRequest.getFullName(),
-                             registerRequest.getEmail(),
-                             registerRequest.getPassword(),
-                             registerRequest.getRole());
-        return userService.register(user);
+    public User register(@RequestBody User user) {
+        return service.register(user);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        // Add login logic here (JWT generation)
-        return "JWT Token";
+    @GetMapping("/{id}")
+    public User get(@PathVariable Long id) {
+        return service.getUserById(id);
+    }
+
+    @GetMapping
+    public List<User> all() {
+        return service.getAllUsers();
     }
 }
