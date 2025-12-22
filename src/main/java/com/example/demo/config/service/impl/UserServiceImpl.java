@@ -1,8 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.config.service.impl;
 
-import com.example.demo.entity.User;
+import com.example.demo.config.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
+import com.example.demo.config.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,25 +10,25 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repo;
+    private final UserRepository repository;
 
-    public UserServiceImpl(UserRepository repo) {
-        this.repo = repo;
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
     }
 
-    public User register(User user) {
-        if (repo.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-        return repo.save(user);
+    @Override
+    public User save(User user) {
+        return repository.save(user);
     }
 
-    public User getUserById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
+    @Override
     public List<User> getAllUsers() {
-        return repo.findAll();
+        return repository.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

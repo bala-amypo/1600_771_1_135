@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.config.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
+import com.example.demo.config.entity.User;
+import com.example.demo.config.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +16,18 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return service.register(user);
-    }
-
-    @GetMapping("/{id}")
-    public User get(@PathVariable Long id) {
-        return service.getUserById(id);
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return service.save(user);
     }
 
     @GetMapping
-    public List<User> all() {
+    public List<User> getAll() {
         return service.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User getById(@PathVariable Long id) {
+        return service.getUserById(id);
     }
 }
