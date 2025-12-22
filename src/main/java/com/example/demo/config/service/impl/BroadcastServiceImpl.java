@@ -5,7 +5,6 @@ import com.example.demo.repository.BroadcastLogRepository;
 import com.example.demo.config.service.BroadcastService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,12 +19,11 @@ public class BroadcastServiceImpl implements BroadcastService {
     @Override
     public void triggerBroadcast(Long updateId) {
 
-        // Since no subscribers exist, we create a single log entry
         BroadcastLog log = new BroadcastLog();
-        log.setEventId(updateId);   // reuse eventId as updateId
+        log.setEventId(updateId);
         log.setMessage("Broadcast sent for update " + updateId);
         log.setChannel("SYSTEM");
-        log.setBroadcastTime(LocalDateTime.now());
+        // ❌ DO NOT set broadcastTime (already set in constructor)
 
         repository.save(log);
     }
