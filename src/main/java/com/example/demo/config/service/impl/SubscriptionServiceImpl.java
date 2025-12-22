@@ -1,8 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.config.service.impl;
 
 import com.example.demo.entity.Subscription;
 import com.example.demo.repository.SubscriptionRepository;
-import com.example.demo.service.SubscriptionService;
+import com.example.demo.config.service.SubscriptionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +33,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Subscription updateSubscription(Long id, Subscription subscription) {
+        Subscription existing = getSubscriptionById(id);
+        return subscriptionRepository.save(existing);
+    }
+
+    @Override
     public void deleteSubscription(Long id) {
-        if (!subscriptionRepository.existsById(id)) {
-            throw new RuntimeException("Subscription not found");
-        }
         subscriptionRepository.deleteById(id);
     }
 }
