@@ -1,10 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.config.entity.Broadcast;
+import com.example.demo.config.entity.BroadcastLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface BroadcastRepository extends JpaRepository<Broadcast, Long> {
+public interface BroadcastLogRepository extends JpaRepository<BroadcastLog, Long> {
 
-    List<Broadcast> findByEventId(Long eventId);
+    List<BroadcastLog> findByEventId(Long eventId);
 }

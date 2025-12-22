@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "broadcasts")
-public class Broadcast {
+@Table(name = "broadcast_logs")
+public class BroadcastLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +19,12 @@ public class Broadcast {
 
     private LocalDateTime broadcastTime;
 
-    public Broadcast() {
+    public BroadcastLog() {
         this.broadcastTime = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getEventId() {

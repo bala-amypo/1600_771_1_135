@@ -1,11 +1,11 @@
 package com.example.demo.config.service;
 
-import com.example.demo.config.entity.Broadcast;
+import com.example.demo.config.entity.BroadcastLog;
 import java.util.List;
 
-public interface BroadcastService {
+public interface BroadcastLogService {
 
-    Broadcast createBroadcast(Broadcast broadcast);
+    BroadcastLog createBroadcastLog(BroadcastLog broadcastLog);
 
-    List<Broadcast> getBroadcastsByEventId(Long eventId);
+    List<BroadcastLog> getBroadcastLogsByEventId(Long eventId);
 }
