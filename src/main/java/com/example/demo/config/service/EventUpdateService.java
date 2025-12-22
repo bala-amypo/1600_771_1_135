@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.config.service;
 
-import com.example.demo.entity.EventUpdate;
+import com.example.demo.config.entity.EventUpdate;
 import java.util.List;
 
 public interface EventUpdateService {

@@ -1,8 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.config.service.impl;
 
-import com.example.demo.entity.EventUpdate;
+import com.example.demo.config.entity.EventUpdate;
 import com.example.demo.repository.EventUpdateRepository;
-import com.example.demo.service.EventUpdateService;
+import com.example.demo.config.service.EventUpdateService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

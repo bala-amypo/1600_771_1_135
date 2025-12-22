@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.config.controller;
 
-import com.example.demo.entity.EventUpdate;
-import com.example.demo.service.EventUpdateService;
+import com.example.demo.config.entity.EventUpdate;
+import com.example.demo.config.service.EventUpdateService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
