@@ -1,22 +1,17 @@
-package com.example.demo.service;
+package com.example.demo.config.service;
 
 import com.example.demo.entity.Subscription;
-import com.example.demo.entity.User;
-import com.example.demo.entity.Event;
-
 import java.util.List;
 
 public interface SubscriptionService {
 
-    // Method to subscribe a user to an event
-    Subscription subscribe(Long userId, Long eventId);
+    Subscription createSubscription(Subscription subscription);
 
-    // Method to unsubscribe a user from an event
-    void unsubscribe(Long userId, Long eventId);
+    Subscription getSubscriptionById(Long id);
 
-    // Method to get a list of all subscriptions for a user
-    List<Subscription> getSubscriptionsForUser(Long userId);
+    List<Subscription> getAllSubscriptions();
 
-    // Method to check if a user is subscribed to an event
-    boolean checkSubscription(Long userId, Long eventId);
+    Subscription updateSubscription(Long id, Subscription subscription);
+
+    void deleteSubscription(Long id);
 }
