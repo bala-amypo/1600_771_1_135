@@ -16,28 +16,24 @@ public class AuthController {
         this.userRepository = userRepository;
     }
 
-    // REGISTER
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-
-        Optional<User> existingUser =
+        Optional<User> existing =
                 userRepository.findAll()
                         .stream()
                         .filter(u -> u.getEmail().equals(user.getEmail()))
                         .findFirst();
 
-        if (existingUser.isPresent()) {
+        if (existing.isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
         return userRepository.save(user);
     }
 
-    // LOGIN (PLAIN TEXT)
     @PostMapping("/login")
     public String login(@RequestBody User user) {
-
-        Optional<User> existingUser =
+        Optional<User> existing =
                 userRepository.findAll()
                         .stream()
                         .filter(u ->
@@ -45,10 +41,8 @@ public class AuthController {
                                 u.getPassword().equals(user.getPassword()))
                         .findFirst();
 
-        if (existingUser.isPresent()) {
-            return "Login successful";
-        }
-
-        return "Invalid email or password";
+        return existing.isPresent()
+                ? "Login successful"
+                : "Invalid email or password";
     }
 }
