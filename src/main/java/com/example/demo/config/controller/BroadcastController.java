@@ -1,6 +1,6 @@
 package com.example.demo.config.controller;
 
-import com.example.demo.config.entity.Broadcast;
+import com.example.demo.config.entity.BroadcastLog;
 import com.example.demo.config.service.BroadcastService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +16,14 @@ public class BroadcastController {
         this.service = service;
     }
 
-    @PostMapping
-    public Broadcast createBroadcast(@RequestBody Broadcast broadcast) {
-        return service.createBroadcast(broadcast);
+    @PostMapping("/trigger/{updateId}")
+    public String triggerBroadcast(@PathVariable Long updateId) {
+        service.triggerBroadcast(updateId);
+        return "Broadcast triggered for update " + updateId;
     }
 
-    @GetMapping("/event/{eventId}")
-    public List<Broadcast> getBroadcasts(@PathVariable Long eventId) {
-        return service.getBroadcastsByEventId(eventId);
+    @GetMapping("/logs/{updateId}")
+    public List<BroadcastLog> getLogs(@PathVariable Long updateId) {
+        return service.getLogsForUpdate(updateId);
     }
 }
