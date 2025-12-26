@@ -24,4 +24,18 @@ public class RegisterRequest {
     }
 
     public String getPassword() {
-        return passw
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+    
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
