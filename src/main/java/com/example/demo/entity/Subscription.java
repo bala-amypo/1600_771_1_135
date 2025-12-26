@@ -4,23 +4,27 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(
+    name = "subscriptions",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "event_id"})
+)
 public class Subscription {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Event event;
 
     private Instant subscribedAt;
 
     @PrePersist
     public void onCreate() {
-        subscribedAt = Instant.now();
+        this.subscribedAt = Instant.now();
     }
 
     // getters and setters

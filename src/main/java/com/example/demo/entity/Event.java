@@ -4,34 +4,35 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "events")
 public class Event {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
+
     private String description;
+
     private String location;
+
     private String category;
 
-    private boolean isActive = true;
+    @ManyToOne(optional = false)
+    private User publisher;
+
+    @Column(nullable = false)
+    private Boolean isActive;
 
     private Instant createdAt;
-    private Instant lastUpdatedAt;
-
-    @ManyToOne
-    private User publisher;
 
     @PrePersist
     public void onCreate() {
-        createdAt = Instant.now();
-        lastUpdatedAt = Instant.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        lastUpdatedAt = Instant.now();
+        this.createdAt = Instant.now();
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
     }
 
     // getters and setters

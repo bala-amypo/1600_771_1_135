@@ -4,26 +4,30 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "broadcast_logs")
 public class BroadcastLog {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private EventUpdate eventUpdate;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User subscriber;
 
-    @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT;
+    @Column(nullable = false)
+    private String deliveryStatus; // PENDING / SENT / FAILED
 
     private Instant sentAt;
 
     @PrePersist
     public void onCreate() {
-        sentAt = Instant.now();
+        this.sentAt = Instant.now();
+        if (this.deliveryStatus == null) {
+            this.deliveryStatus = "SENT";
+        }
     }
 
     // getters and setters

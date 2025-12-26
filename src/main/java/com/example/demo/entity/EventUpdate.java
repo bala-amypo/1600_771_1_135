@@ -4,26 +4,27 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(name = "event_updates")
 public class EventUpdate {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Event event;
 
+    @Column(nullable = false)
     private String updateContent;
 
-    private Instant timestamp;
+    @Column(nullable = false)
+    private String updateType; // INFO / WARNING / CRITICAL
 
-    @Enumerated(EnumType.STRING)
-    private SeverityLevel severityLevel;
+    private Instant postedAt;
 
     @PrePersist
     public void onCreate() {
-        timestamp = Instant.now();
-        if (severityLevel == null) severityLevel = SeverityLevel.LOW;
+        this.postedAt = Instant.now();
     }
 
     // getters and setters
