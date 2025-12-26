@@ -1,7 +1,7 @@
-package com.example.demo.config.controller;
+package com.example.demo.controller;
 
-import com.example.demo.config.entity.BroadcastLog;
-import com.example.demo.config.service.BroadcastService;
+import com.example.demo.entity.BroadcastLog;
+import com.example.demo.service.BroadcastService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,20 +10,19 @@ import java.util.List;
 @RequestMapping("/api/broadcasts")
 public class BroadcastController {
 
-    private final BroadcastService service;
+    private final BroadcastService broadcastService;
 
-    public BroadcastController(BroadcastService service) {
-        this.service = service;
+    public BroadcastController(BroadcastService broadcastService) {
+        this.broadcastService = broadcastService;
     }
 
     @PostMapping("/trigger/{updateId}")
-    public String triggerBroadcast(@PathVariable Long updateId) {
-        service.triggerBroadcast(updateId);
-        return "Broadcast triggered for update " + updateId;
+    public void trigger(@PathVariable Long updateId) {
+        broadcastService.triggerBroadcast(updateId);
     }
 
     @GetMapping("/logs/{updateId}")
     public List<BroadcastLog> getLogs(@PathVariable Long updateId) {
-        return service.getLogsForUpdate(updateId);
+        return broadcastService.getLogsForUpdate(updateId);
     }
 }

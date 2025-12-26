@@ -1,7 +1,7 @@
-package com.example.demo.config.controller;
+package com.example.demo.controller;
 
 import com.example.demo.entity.Subscription;
-import com.example.demo.config.service.SubscriptionService;
+import com.example.demo.service.SubscriptionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,30 +16,29 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-    @GetMapping
-    public List<Subscription> getAllSubscriptions() {
-        return subscriptionService.getAllSubscriptions();
+    @PostMapping("/{eventId}")
+    public Subscription subscribe(
+            @RequestParam Long userId,
+            @PathVariable Long eventId) {
+        return subscriptionService.subscribe(userId, eventId);
     }
 
-    @GetMapping("/{id}")
-    public Subscription getSubscriptionById(@PathVariable Long id) {
-        return subscriptionService.getSubscriptionById(id);
+    @DeleteMapping("/{eventId}")
+    public void unsubscribe(
+            @RequestParam Long userId,
+            @PathVariable Long eventId) {
+        subscriptionService.unsubscribe(userId, eventId);
     }
 
-    @PostMapping
-    public Subscription createSubscription(@RequestBody Subscription subscription) {
-        return subscriptionService.createSubscription(subscription);
+    @GetMapping("/user/{userId}")
+    public List<Subscription> getUserSubscriptions(@PathVariable Long userId) {
+        return subscriptionService.getUserSubscriptions(userId);
     }
 
-    @PutMapping("/{id}")
-    public Subscription updateSubscription(
-            @PathVariable Long id,
-            @RequestBody Subscription subscription) {
-        return subscriptionService.updateSubscription(id, subscription);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteSubscription(@PathVariable Long id) {
-        subscriptionService.deleteSubscription(id);
+    @GetMapping("/check/{userId}/{eventId}")
+    public boolean check(
+            @PathVariable Long userId,
+            @PathVariable Long eventId) {
+        return subscriptionService.isSubscribed(userId, eventId);
     }
 }
