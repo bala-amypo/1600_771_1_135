@@ -1,57 +1,30 @@
-package com.example.demo.config.entity;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
-@Table(name = "broadcast_logs")
 public class BroadcastLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    private Long eventId;
+    @ManyToOne
+    private EventUpdate eventUpdate;
 
-    private String message;
+    @ManyToOne
+    private User subscriber;
 
-    private String channel;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT;
 
-    private LocalDateTime broadcastTime;
+    private Instant sentAt;
 
-    public BroadcastLog() {
-        this.broadcastTime = LocalDateTime.now();
+    @PrePersist
+    public void onCreate() {
+        sentAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public LocalDateTime getBroadcastTime() {
-        return broadcastTime;
-    }
+    // getters and setters
 }
