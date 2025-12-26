@@ -1,15 +1,18 @@
-package com.example.demo.config.service;
+package com.example.demo.service;
 
-import com.example.demo.config.entity.Event;
+import com.example.demo.entity.Event;
+
 import java.util.List;
 
 public interface EventService {
 
     Event createEvent(Event event);
 
+    Event updateEvent(Long id, Event updatedEvent);
+
     Event getEventById(Long id);
 
-    List<Event> getAllEvents();
-
     List<Event> getActiveEvents();
+
+    void deactivateEvent(Long id);
 }
