@@ -33,24 +33,4 @@ public class JwtUtil {
             return false;
         }
     }
-
-    public String getUsernameFromToken(String token) {
-        return getClaims(token).getSubject();
-    }
-
-    public Long getUserIdFromToken(String token) {
-        return ((Number) getClaims(token).get("userId")).longValue();
-    }
-
-    public String getRoleFromToken(String token) {
-        return getClaims(token).get("role", String.class);
-    }
-
-    private Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }

@@ -13,14 +13,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
-
         AuthResponse response = new AuthResponse();
         response.setEmail(request.getEmail());
         response.setUserId(1L);
         response.setRole("SUBSCRIBER");
-        response.setToken(
-                jwtUtil.generateToken(1L, request.getEmail(), "SUBSCRIBER")
-        );
+        response.setToken(jwtUtil.generateToken(1L, request.getEmail(), "SUBSCRIBER"));
         return response;
     }
 }
