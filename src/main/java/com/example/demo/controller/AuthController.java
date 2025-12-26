@@ -1,48 +1,26 @@
-package com.example.demo.config.controller;
+package com.example.demo.controller;
 
-import com.example.demo.config.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.dto.*;
+import com.example.demo.security.JwtUtil;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
-
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        Optional<User> existing =
-                userRepository.findAll()
-                        .stream()
-                        .filter(u -> u.getEmail().equals(user.getEmail()))
-                        .findFirst();
-
-        if (existing.isPresent()) {
-            throw new RuntimeException("Email already exists");
-        }
-
-        return userRepository.save(user);
-    }
+    private final JwtUtil jwtUtil =
+            new JwtUtil("ThisIsAVerySecureSecretKeyForJwtDemo123456789", 3600000);
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        Optional<User> existing =
-                userRepository.findAll()
-                        .stream()
-                        .filter(u ->
-                                u.getEmail().equals(user.getEmail()) &&
-                                u.getPassword().equals(user.getPassword()))
-                        .findFirst();
+    public AuthResponse login(@RequestBody AuthRequest request) {
 
-        return existing.isPresent()
-                ? "Login successful"
-                : "Invalid email or password";
+        AuthResponse response = new AuthResponse();
+        response.setEmail(request.getEmail());
+        response.setUserId(1L);
+        response.setRole("SUBSCRIBER");
+        response.setToken(
+                jwtUtil.generateToken(1L, request.getEmail(), "SUBSCRIBER")
+        );
+        return response;
     }
 }
