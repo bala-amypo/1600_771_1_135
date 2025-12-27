@@ -1,16 +1,5 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -18,20 +7,23 @@ public class User {
     private Long id;
 
     private String fullName;
-
-    @Column(unique = true)
     private String email;
-
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.SUBSCRIBER;
+    private Role role;
 
-    private LocalDateTime createdAt;
+    // GETTERS & SETTERS (MANDATORY)
 
-    @PrePersist
-    public void onCreate() {
-        createdAt = LocalDateTime.now();
-        if (role == null) role = Role.SUBSCRIBER;
-    }
+    public Long getId() { return id; }
+    public String getFullName() { return fullName; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public Role getRole() { return role; }
+
+    public void setId(Long id) { this.id = id; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(Role role) { this.role = role; }
 }
