@@ -41,7 +41,11 @@ public class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public List<BroadcastLog> getLogsForUpdate(Long updateId) {
-        return broadcastLogRepository.findByEventUpdateId(updateId);
+        Optional<EventUpdate> eventUpdate = eventUpdateRepository.findById(updateId);
+        if (eventUpdate.isPresent()) {
+            return broadcastLogRepository.findByEventUpdate(eventUpdate.get());
+        }
+        return List.of();
     }
 
     @Override

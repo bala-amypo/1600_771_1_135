@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface BroadcastLogRepository extends JpaRepository<BroadcastLog, Long> {
     
-    List<BroadcastLog> findByUpdateId(Long updateId);
+    List<BroadcastLog> findByEventUpdate(com.example.demo.entity.EventUpdate eventUpdate);
     
-    List<BroadcastLog> findBySubscriberId(Long subscriberId);
+    List<BroadcastLog> findBySubscriber(com.example.demo.entity.User subscriber);
 }
