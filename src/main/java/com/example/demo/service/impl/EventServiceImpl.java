@@ -27,10 +27,12 @@ public class EventServiceImpl implements EventService {
             Event event = existingEvent.get();
             event.setTitle(updatedEvent.getTitle());
             event.setDescription(updatedEvent.getDescription());
-            event.setStartDate(updatedEvent.getStartDate());
-            event.setEndDate(updatedEvent.getEndDate());
             event.setLocation(updatedEvent.getLocation());
+            event.setCategory(updatedEvent.getCategory());
             event.setActive(updatedEvent.isActive());
+            if (updatedEvent.getPublisher() != null) {
+                event.setPublisher(updatedEvent.getPublisher());
+            }
             return eventRepository.save(event);
         }
         return null;
