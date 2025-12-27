@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "events")
 public class Event {
 
     @Id
@@ -12,28 +11,38 @@ public class Event {
     private Long id;
 
     private String title;
-
     private String description;
-
     private String location;
-
     private String category;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private User publisher;
 
-    @Column(nullable = false)
-    private Boolean isActive;
+    private boolean active = true;
 
     private Instant createdAt;
 
     @PrePersist
     public void onCreate() {
-        this.createdAt = Instant.now();
-        if (this.isActive == null) {
-            this.isActive = true;
-        }
+        createdAt = Instant.now();
     }
 
-    // getters and setters
+    public Long getId() { return id; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
+    public User getPublisher() { return publisher; }
+    public void setPublisher(User publisher) { this.publisher = publisher; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }

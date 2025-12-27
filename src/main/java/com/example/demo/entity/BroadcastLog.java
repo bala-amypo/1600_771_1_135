@@ -1,34 +1,31 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 
 @Entity
-@Table(name = "broadcast_logs")
 public class BroadcastLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private EventUpdate eventUpdate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private User subscriber;
 
-    @Column(nullable = false)
-    private String deliveryStatus; // PENDING / SENT / FAILED
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
 
-    private Instant sentAt;
+    public EventUpdate getEventUpdate() { return eventUpdate; }
+    public void setEventUpdate(EventUpdate eventUpdate) { this.eventUpdate = eventUpdate; }
 
-    @PrePersist
-    public void onCreate() {
-        this.sentAt = Instant.now();
-        if (this.deliveryStatus == null) {
-            this.deliveryStatus = "SENT";
-        }
+    public User getSubscriber() { return subscriber; }
+    public void setSubscriber(User subscriber) { this.subscriber = subscriber; }
+
+    public DeliveryStatus getDeliveryStatus() { return deliveryStatus; }
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
     }
-
-    // getters and setters
 }

@@ -1,31 +1,23 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
 
 @Entity
-@Table(
-    name = "subscriptions",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "event_id"})
-)
 public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private User user;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Event event;
 
-    private Instant subscribedAt;
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    @PrePersist
-    public void onCreate() {
-        this.subscribedAt = Instant.now();
-    }
-
-    // getters and setters
+    public Event getEvent() { return event; }
+    public void setEvent(Event event) { this.event = event; }
 }
