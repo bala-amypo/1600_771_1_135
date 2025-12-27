@@ -16,29 +16,32 @@ public class SubscriptionController {
         this.subscriptionService = subscriptionService;
     }
 
-    @PostMapping("/{eventId}")
+    @PostMapping("/{userId}/{eventId}")
     public Subscription subscribe(
-            @RequestParam Long userId,
+            @PathVariable Long userId,
             @PathVariable Long eventId) {
+
         return subscriptionService.subscribe(userId, eventId);
     }
 
-    @DeleteMapping("/{eventId}")
+    @DeleteMapping("/{userId}/{eventId}")
     public void unsubscribe(
-            @RequestParam Long userId,
+            @PathVariable Long userId,
             @PathVariable Long eventId) {
+
         subscriptionService.unsubscribe(userId, eventId);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public List<Subscription> getUserSubscriptions(@PathVariable Long userId) {
         return subscriptionService.getUserSubscriptions(userId);
     }
 
-    @GetMapping("/check/{userId}/{eventId}")
-    public boolean check(
+    @GetMapping("/{userId}/{eventId}/status")
+    public boolean isSubscribed(
             @PathVariable Long userId,
             @PathVariable Long eventId) {
+
         return subscriptionService.isSubscribed(userId, eventId);
     }
 }

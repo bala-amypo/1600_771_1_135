@@ -9,5 +9,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     List<Subscription> findByUserId(Long userId);
 
+    boolean existsByUserIdAndEventId(Long userId, Long eventId);
+
     void deleteByUserIdAndEventId(Long userId, Long eventId);
 }
