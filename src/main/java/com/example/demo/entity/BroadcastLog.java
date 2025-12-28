@@ -1,9 +1,18 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "broadcast_logs")
 public class BroadcastLog {
 
     @Id
@@ -18,23 +27,26 @@ public class BroadcastLog {
     @JoinColumn(name = "subscriber_id")
     private User subscriber;
 
+    // ✅ default required by test
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus;
+    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT;
 
-    // Constructors
+    private Timestamp sentAt;
+
     public BroadcastLog() {}
 
-    public BroadcastLog(EventUpdate eventUpdate, User subscriber, DeliveryStatus deliveryStatus) {
-        this.eventUpdate = eventUpdate;
-        this.subscriber = subscriber;
-        this.deliveryStatus = deliveryStatus;
+    @PrePersist
+    public void onCreate() {
+        this.sentAt = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
+    // ===== REQUIRED GETTERS / SETTERS =====
+
     public Long getId() {
         return id;
     }
 
+    // 🔴 THIS WAS MISSING (TEST REQUIRES IT)
     public void setId(Long id) {
         this.id = id;
     }
@@ -61,5 +73,9 @@ public class BroadcastLog {
 
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public Timestamp getSentAt() {
+        return sentAt;
     }
 }
