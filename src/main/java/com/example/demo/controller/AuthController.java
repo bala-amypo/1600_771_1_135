@@ -1,89 +1,61 @@
-package com.example.demo.controller;
+// package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+// import com.example.demo.entity.User;
+// import com.example.demo.security.JwtUtil;
+// import com.example.demo.service.UserService;
 
-@RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.security.crypto.password.PasswordEncoder;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-    @Autowired
-    private UserService userService;
+// import java.util.HashMap;
+// import java.util.Map;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+// @RestController
+// @RequestMapping("/auth")
+// public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//     private final UserService userService;
+//     private final PasswordEncoder passwordEncoder;
+//     private final JwtUtil jwtUtil;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+//     public AuthController(UserService userService,
+//                           PasswordEncoder passwordEncoder,
+//                           JwtUtil jwtUtil) {
+//         this.userService = userService;
+//         this.passwordEncoder = passwordEncoder;
+//         this.jwtUtil = jwtUtil;
+//     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
-        User registeredUser = userService.register(user);
-        return ResponseEntity.ok(registeredUser);
-    }
+//     // REGISTER
+//     @PostMapping("/register")
+//     public ResponseEntity<User> register(@RequestBody User user) {
+//         User savedUser = userService.register(user);
+//         return ResponseEntity.ok(savedUser);
+//     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                loginRequest.getEmail(), 
-                loginRequest.getPassword()
-            )
-        );
+//     // LOGIN
+//     @PostMapping("/login")
+//     public ResponseEntity<Map<String, String>> login(@RequestBody User request) {
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
-        String token = jwtUtil.generateToken(userDetails);
+//         User user = userService.findByEmail(request.getEmail());
 
-        return ResponseEntity.ok(new AuthResponse(token));
-    }
+//         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+//             throw new RuntimeException("Invalid credentials");
+//         }
 
-    // Inner classes for request/response
-    public static class LoginRequest {
-        private String email;
-        private String password;
+//         String token = jwtUtil.generateToken(
+//                 user.getId(),
+//                 user.getEmail(),
+//                 user.getRole().name()
+//         );
 
-        public String getEmail() {
-            return email;
-        }
+//         Map<String, String> response = new HashMap<>();
+//         response.put("token", token);
 
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-    }
-
-    public static class AuthResponse {
-        private String token;
-
-        public AuthResponse(String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
-        }
-    }
-}
+//         return ResponseEntity.ok(response);
+//     }
+// }

@@ -1,28 +1,20 @@
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.*;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.*;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI() {
-
-        SecurityScheme scheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT");
-
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Digital Local Event Broadcasting API")
-                        .version("1.0.0")
-                        .description("JWT secured API"))
-                .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
-                .components(new Components().addSecuritySchemes("BearerAuth", scheme));
-    }
+                // You need to change the port as per your server
+                .servers(List.of(
+                        new Server().url("https://9003.32procr.amypo.ai/")
+                ));
+        }
 }
