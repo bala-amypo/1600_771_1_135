@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.EventUpdate;
-
 import java.util.List;
 
 public interface EventUpdateService {
 
-    EventUpdate create(EventUpdate update, Long eventId);
+     
+    EventUpdate publishUpdate(EventUpdate update);
 
-    List<EventUpdate> getUpdatesByEvent(Long eventId);
+    EventUpdate getUpdateById(Long id);
+
+    List<EventUpdate> getUpdatesForEvent(Long eventId);
 }

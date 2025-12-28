@@ -1,60 +1,88 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Event;
+import com.example.demo.entity.Role;
+import com.example.demo.entity.User;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.EventRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
+    public EventServiceImpl(EventRepository eventRepository,
+                            UserRepository userRepository) {
+        this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Event createEvent(Event event) {
+
+        Long publisherId = event.getPublisher().getId();
+
+        User publisher = userRepository.findById(publisherId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (publisher.getRole() != Role.PUBLISHER && publisher.getRole() != Role.ADMIN) {
+            throw new BadRequestException("Only PUBLISHER or ADMIN can create events");
+        }
+
+        event.setPublisher(publisher);
         return eventRepository.save(event);
     }
 
     @Override
-    public Event updateEvent(Long id, Event updatedEvent) {
-        Optional<Event> existingEvent = eventRepository.findById(id);
-        if (existingEvent.isPresent()) {
-            Event event = existingEvent.get();
-            event.setTitle(updatedEvent.getTitle());
-            event.setDescription(updatedEvent.getDescription());
-            event.setLocation(updatedEvent.getLocation());
-            event.setCategory(updatedEvent.getCategory());
-            event.setActive(updatedEvent.isActive());
-            if (updatedEvent.getPublisher() != null) {
-                event.setPublisher(updatedEvent.getPublisher());
-            }
-            return eventRepository.save(event);
-        }
-        return null;
-    }
+    public Event updateEvent(Long id, Event updated) {
 
-    @Override
-    public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElse(null);
+        Event existing = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        existing.setTitle(updated.getTitle());
+        existing.setDescription(updated.getDescription());
+        existing.setLocation(updated.getLocation());
+        existing.setCategory(updated.getCategory());
+
+        return eventRepository.save(existing);
     }
 
     @Override
     public List<Event> getActiveEvents() {
-        return eventRepository.findByActiveTrue();
+        return eventRepository.findByIsActiveTrue();
     }
 
     @Override
     public void deactivateEvent(Long id) {
-        Optional<Event> event = eventRepository.findById(id);
-        if (event.isPresent()) {
-            Event existingEvent = event.get();
-            existingEvent.setActive(false);
-            eventRepository.save(existingEvent);
-        }
+
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        event.setActive(false);
+        eventRepository.save(event);
+    }
+
+    
+    @Override
+    public Event save(Event event) {
+        return eventRepository.save(event);
+    }
+
+    @Override
+    public Event getById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+    }
+
+    @Override
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
     }
 }
