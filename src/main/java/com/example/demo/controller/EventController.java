@@ -1,10 +1,13 @@
+
+
 package com.example.demo.controller;
 
 import com.example.demo.entity.Event;
 import com.example.demo.service.EventService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")
@@ -17,8 +20,25 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> create(@RequestBody Event event) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(eventService.createEvent(event));
+    public Event createEvent(@RequestBody Event event) {
+        return eventService.save(event);
+    }
+
+
+    @GetMapping("/{id}")
+    public Event getEvent(@PathVariable Long id) {
+        return eventService.getById(id);
+    }
+
+
+    @GetMapping
+    public List<Event> getAllEvents() {
+        return eventService.getAllEvents();
+    }
+
+    
+    @PutMapping("/{id}/deactivate")
+    public void deactivateEvent(@PathVariable Long id) {
+        eventService.deactivateEvent(id);
     }
 }

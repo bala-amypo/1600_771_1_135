@@ -1,29 +1,23 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Event;
-import com.example.demo.entity.User;
-import com.example.demo.repository.EventRepository;
-import com.example.demo.repository.UserRepository;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class EventService {
+public interface EventService {
 
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
+    // ===== USED BY TESTS =====
+    Event createEvent(Event event);
 
-    public EventService(EventRepository eventRepository, UserRepository userRepository) {
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
-    }
+    Event updateEvent(Long id, Event event);
 
-    public Event createEvent(Event event) {
-        Long publisherId = event.getPublisher().getId();
+    List<Event> getActiveEvents();
 
-        User publisher = userRepository.findById(publisherId)
-                .orElseThrow(() -> new RuntimeException("Publisher not found"));
+    void deactivateEvent(Long id);
 
-        event.setPublisher(publisher);
-        return eventRepository.save(event);
-    }
+    // ===== USED BY CONTROLLER =====
+    Event save(Event event);
+
+    Event getById(Long id);
+
+    List<Event> getAllEvents();
 }
