@@ -53,8 +53,6 @@ public class Event {
         lastUpdatedAt = LocalDateTime.now();
     }
 
-    // ---------- GETTERS & SETTERS ----------
-
     public Long getId() {
         return id;
     }
@@ -115,4 +113,15 @@ public class Event {
         return publisher;
     }
 
-    public v
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+}
